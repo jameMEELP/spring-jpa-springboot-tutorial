@@ -21,7 +21,14 @@ public class CustomerService {
 		customerRepository.save(customer);
 	}
 
-	public void deleteCustomer(long id) {
-		customerRepository.deleteById(id);
+	public boolean deleteCustomer(long id) {
+		boolean isFailed = false;
+		try {
+			customerRepository.deleteById(id);
+		}catch (Exception e) {
+			isFailed = true;
+			// e.printStackTrace();
+		}
+		return isFailed;
 	}
 }

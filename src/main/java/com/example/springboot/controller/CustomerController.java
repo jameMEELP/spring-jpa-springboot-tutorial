@@ -34,10 +34,7 @@ public class CustomerController {
 	public ResponseEntity<Customer> getAllCustomer() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		List<Customer> list = new ArrayList<Customer>();
-		list = customerService.getAllCustomers();
-		System.out.println("list = " + list);
-		return new ResponseEntity(list, headers, HttpStatus.OK);
+		return new ResponseEntity((List<Customer>) customerService.getAllCustomers(), headers, HttpStatus.OK);
 	}
 
 	@PostMapping("/customer/")
@@ -55,14 +52,19 @@ public class CustomerController {
 
 	@DeleteMapping("/customer/{id}")
 	public ResponseEntity<CustomerResponse> deleteCustomerById(@PathVariable long id) {
+		boolean isFailed = false;
 		try {
-			customerService.deleteCustomer(id);
+			isFailed = customerService.deleteCustomer(id);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
-		return new ResponseEntity(new CustomerResponse("200", "OK"),headers, HttpStatus.CREATED);//ResponseEntity.ok().body(new CustomerResponse("200", "Deleted"));
+		if (isFailed) {
+			return new ResponseEntity(new CustomerResponse("500", "FAIL"),headers, HttpStatus.INTERNAL_SERVER_ERROR);//ResponseEntity.ok().body(new CustomerResponse("200", "Deleted"));
+		} else {
+			return new ResponseEntity(new CustomerResponse("200", "OK"),headers, HttpStatus.OK);//ResponseEntity.ok().body(new CustomerResponse("200", "Deleted"));
+		}
 	}
 }
