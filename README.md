@@ -2,4 +2,4 @@
 This Project for Learning how to development Restful Api using Java Spring framework.
 
 
-Develop by Yodsarun Pongda 21-11-2021.
+Developed by Yodsarun Pongda 21-11-2021.
